@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import conta_bancaria.model.Conta;
 import conta_bancaria.model.ContaCorrente;
+import conta_bancaria.model.ContaPoupanca;
 import conta_bancaria.util.Cores;
 
 public class Menu {
@@ -45,6 +46,18 @@ public class Menu {
 		
 		cc1.depositar(1000.00f);
 		cc1.visualizar();
+		
+		ContaPoupanca cp1 = new ContaPoupanca(3, 789, 1, "Xavier", 5400.00f, 15);
+		cp1.visualizar();
+		
+		//Calculo com taxa mensal
+		float taxaMensal = 0.5f;
+		cp1.calcularNovoSaldo(taxaMensal);
+        
+        System.out.println("\n--- Após o Rendimento Mensal ---");
+        cp1.visualizar();
+		
+		
 		
 
 		while (true) {
