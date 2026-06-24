@@ -1,64 +1,24 @@
 package conta_bancaria;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import conta_bancaria.model.Conta;
 import conta_bancaria.model.ContaCorrente;
 import conta_bancaria.model.ContaPoupanca;
 import conta_bancaria.util.Cores;
-
+import conta_bancaria.controller.ContaController;
 public class Menu {
 
-	public static Scanner leia = new Scanner(System.in);
+	private static final Scanner leia = new Scanner(System.in);
+	private static final ContaController contaController = new ContaController();
 
 	public static void main(String[] args) {
 
 		int opcao;
 		
-		/* Instanciar Objetos da Classe Conta*/
-		
-		Conta c1 = new Conta(1, 123, 1, "Logan", 200000.00f);
-		c1.visualizar();
-		Conta c2 = new Conta(1, 123, 2, "Tempestade", 100000.00f);
-		c2.visualizar();
-		
-		c1.setSaldo(300000.00f);
-		c1.setTitular("Logan Xmen");
-		c1.visualizar();
-		
-		System.out.println("\nSacar R$ 1000,00 da conta C2: " + (c2.sacar(1000.00f) ? 
-				"Saque efetuado com Sucesso!" : "Saldo insuficiente"));
-		
-		System.out.println("\nSacar R$ 1000,00 da conta C2: " + (c2.sacar(300000.00f) ? 
-				"Saque efetuado com Sucesso!" : "Saldo insuficiente"));
-		c2.visualizar();
-		
-		c2.depositar(50000.00f);
-		c2.visualizar();
-		
-		//* Instanciar Objetos da Classe ConraCorrente*/
-		
-		ContaCorrente cc1 = new ContaCorrente(3, 789, 1, "Magneto", 200000.00f, 2000.00f);
-		cc1.visualizar();
-		System.out.println("\nSacar R$ 202.000,00 da conta CC1: " + (cc1.sacar(202000.00f) ? 
-				"Saque efetuado com Sucesso! Saldo: " +cc1.getSaldo() : "Saldo insuficiente"));
-		cc1.visualizar();	
-		
-		cc1.depositar(1000.00f);
-		cc1.visualizar();
-		
-		ContaPoupanca cp1 = new ContaPoupanca(3, 789, 1, "Xavier", 5400.00f, 15);
-		cp1.visualizar();
-		
-		//Calculo com taxa mensal
-		float taxaMensal = 0.5f;
-		cp1.calcularNovoSaldo(taxaMensal);
-        
-        System.out.println("\n--- Após o Rendimento Mensal ---");
-        cp1.visualizar();
-		
-		
-		
+		//Criar dados de teste
+		criarContasTeste();
 
 		while (true) {
 
@@ -91,11 +51,17 @@ public class Menu {
 
 			System.out.println("Entre com a opção desejada:                                          ");
 
-			System.out.println("                                                                     ");
+			System.out.println("                                                                     " + Cores.TEXT_RESET);
 
-			opcao = leia.nextInt();
+			try{
+				opcao = leia.nextInt();
 
 			leia.nextLine();
+			} catch(InputMismatchException e) {
+				opcao =-1;
+				System.out.println("Digite um néumero inteiro entre 0 e 8");
+			leia.nextLine();
+			}
 
 			switch (opcao) {
 
@@ -103,10 +69,9 @@ public class Menu {
 
 				System.out.println("\n-> Opção Selecionada: Criar Conta");
 
-				System.out.print("\nPressione ENTER para voltar ao menu...");
+				cadastrarConta();
 
-				leia.nextLine();
-
+				keyPress();
 				break;
 
 			case 2:
@@ -115,7 +80,9 @@ public class Menu {
 
 				System.out.print("\nPressione ENTER para voltar ao menu...");
 
-				leia.nextLine();
+				listarContas();
+				keyPress();
+				
 
 				break;
 
@@ -125,7 +92,7 @@ public class Menu {
 
 				System.out.print("\nPressione ENTER para voltar ao menu...");
 
-				leia.nextLine();
+				keyPress();
 
 				break;
 
@@ -135,7 +102,7 @@ public class Menu {
 
 				System.out.print("\nPressione ENTER para voltar ao menu...");
 
-				leia.nextLine();
+				keyPress();
 
 				break;
 
@@ -145,7 +112,7 @@ public class Menu {
 
 				System.out.print("\nPressione ENTER para voltar ao menu...");
 
-				leia.nextLine();
+				keyPress();
 
 				break;
 
@@ -155,7 +122,7 @@ public class Menu {
 
 				System.out.print("\nPressione ENTER para voltar ao menu...");
 
-				leia.nextLine();
+				keyPress();
 
 				break;
 
@@ -165,7 +132,7 @@ public class Menu {
 
 				System.out.print("\nPressione ENTER para voltar ao menu...");
 
-				leia.nextLine();
+				keyPress();
 
 				break;
 
@@ -175,7 +142,7 @@ public class Menu {
 
 				System.out.print("\nPressione ENTER para voltar ao menu...");
 
-				leia.nextLine();
+				keyPress();
 
 				break;
 
@@ -199,14 +166,57 @@ public class Menu {
 
 				System.out.print("\nPressione ENTER para continuar...");
 
-				leia.nextLine();
+				keyPress();
 
 				break;
 
 			}
 
 		}
-
+		
+	}
+	public static void keyPress() {
+		System.out.println(Cores.TEXT_RESET + "\n\nPressione Enter para continuar...");
+		leia.nextLine();
 	}
 
+		public static void criarContasTeste() {
+			contaController.cadastrar(new ContaCorrente(contaController.gerarNumero(), 456, 1, "Thuany Silva", 1000000.00f, 100000.00f));
+			contaController.cadastrar(new ContaPoupanca(contaController.gerarNumero(), 456, 2, "Marcia Condarco", 1000000.00f, 10));
+	
+	}
+	public static void listarContas() {
+		contaController.listarTodas();
+	}
+	public static void cadastrarConta() {
+		System.out.println("Digite o número da agência: ");
+		int agencia = leia.nextInt();
+		System.out.println("Digite o nome do titular da conta : ");
+		leia.skip("\\R");
+		String titular = leia.nextLine();
+		System.out.println("Digite o tipo de conta (1 - CC | 2 - CP): ");
+		int tipo = leia.nextInt();
+		System.out.println("Digite o saldo da conta: ");
+		float saldo = leia.nextFloat();
+		
+		switch(tipo) { 
+			case 1 -> {
+				System.out.println("Digite o limite da conta: ");
+				float limite = leia.nextFloat();
+				leia.nextLine();
+				
+				contaController.cadastrar(new ContaCorrente(contaController.gerarNumero(), agencia, tipo, titular, saldo, limite));
+			}
+			case 2 -> { 
+				System.out.println("Digite o aniversário da conta: ");
+				int aniversario = leia.nextInt();
+				leia.nextLine();
+				
+				contaController.cadastrar(new ContaPoupanca(contaController.gerarNumero(), agencia, tipo, titular, saldo, aniversario));
+			}
+			default -> System.out.println(Cores.TEXT_RED + "Tipo de conta inválida" + Cores.TEXT_RESET);
+			}
+		
+	
+	}
 }
