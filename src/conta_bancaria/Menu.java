@@ -26,7 +26,7 @@ public class Menu {
 			System.out.println(Cores.TEXT_RED + Cores.ANSI_WHITE_BACKGROUND
 					+ "*********************************************************************");
 
-			System.out.println("                               BRADEZBANK                            ");
+			System.out.println("                             BRADEZBANK                              ");
 
 			System.out.println("*********************************************************************");
 
@@ -45,6 +45,7 @@ public class Menu {
 			System.out.println("                               7 - Depositar                         ");
 
 			System.out.println("                      8 - Transferir valores entre Contas            ");
+			System.out.println("                      9 - Consulta por nome do Titular               ");
 
 			System.out.println("                                   0 - Sair                          ");
 
@@ -90,9 +91,7 @@ public class Menu {
 			case 3:
 
 				System.out.println("\n-> Opção Selecionada: Buscar Conta por Numero");
-
 				procurarContaPorNumero();
-
 				keyPress();
 
 				break;
@@ -108,7 +107,6 @@ public class Menu {
 			case 5:
 
 				System.out.println("\n-> Opção Selecionada: Apagar Conta");
-
 				deletarConta();
 				keyPress();
 
@@ -117,9 +115,7 @@ public class Menu {
 			case 6:
 
 				System.out.println("\n-> Opção Selecionada: Sacar");
-
-				System.out.print("\nPressione ENTER para voltar ao menu...");
-
+				sacar();
 				keyPress();
 
 				break;
@@ -128,8 +124,7 @@ public class Menu {
 
 				System.out.println("\n-> Opção Selecionada: Depositar");
 
-				System.out.print("\nPressione ENTER para voltar ao menu...");
-
+				depositar();
 				keyPress();
 
 				break;
@@ -137,9 +132,14 @@ public class Menu {
 			case 8:
 
 				System.out.println("\n-> Opção Selecionada: Transferir valores entre Contas");
+				transferir();
+				keyPress();
 
-				System.out.print("\nPressione ENTER para voltar ao menu...");
+				break;
+			case 9:
 
+				System.out.println("\n-> Consulta por nome do Titular: ");
+				listarPorTitular();
 				keyPress();
 
 				break;
@@ -319,4 +319,54 @@ public class Menu {
 			System.out.printf("\nA conta número %d não foi encontrada!", numero);
 		}
 	}
+	
+	public static void sacar() {
+		
+		System.out.println("Digite o número da conta: ");
+		int numero = leia.nextInt();
+		
+		System.out.println("Digite o valor do saque: ");
+		float valor = leia.nextFloat();
+		leia.nextLine();
+		contaController.sacar(numero, valor);
+		
+	}
+	
+	public static void depositar() {
+		
+		System.out.println("Digite o número da conta: ");
+		int numero = leia.nextInt();
+		
+		System.out.println("Digite o valor do depósito: ");
+		float valor = leia.nextFloat();
+		leia.nextLine();
+
+		contaController.depositar(numero, valor);
+		
+	}
+	
+	public static void transferir() {
+		
+		System.out.println("Digite o número da conta de origem: ");
+		int numeroOrigem = leia.nextInt();
+		
+		System.out.println("Digite o número da conta de destino: ");
+		int numeroDestino = leia.nextInt();
+		
+		System.out.println("Digite o valor da transferência: ");
+		float valor = leia.nextFloat();
+		leia.nextLine();
+
+		contaController.transferir(numeroOrigem, numeroDestino, valor);
+		
+	}
+	
+	public static void listarPorTitular(){
+		System.out.println("Digite o nome do titular da conta : ");
+		String titular = leia.nextLine();
+		
+		contaController.listarPorTitular(titular);
+	}
+	
+	
 }
